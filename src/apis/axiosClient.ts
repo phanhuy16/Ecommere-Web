@@ -18,7 +18,7 @@ axiosClient.interceptors.request.use(async (config: any) => {
   const accesstoken = getAccessToken();
 
   config.headers = {
-    Authorization: `Bearer ${accesstoken}`,
+    Authorization: accesstoken ? `Bearer ${accesstoken}` : "",
     Accept: 'application/json',
     ...config.headers,
   };
