@@ -80,7 +80,7 @@ const Signup = () => {
                     { required: true, message: "Please enter your password!" },
                   ]}
                 >
-                  <Input placeholder="" allowClear />
+                  <Input.Password placeholder="" allowClear />
                 </Form.Item>
               </Form>
               <div className="mt-4">
