@@ -1,6 +1,10 @@
 import { useState } from "react";
 import BG_Sign from "/assets/images/signup.png";
 import { Button, Checkbox, Form, Input, Typography } from "antd";
+import handleAPI from "../../apis/handleAPI";
+import { useDispatch } from "react-redux";
+import { addAuth } from "../../redux/reducres/authReducer";
+import { useNavigate } from "react-router-dom";
 
 interface SignUp {
   fisrtName: string;
@@ -11,12 +15,33 @@ interface SignUp {
 
 const Signup = () => {
   const [form] = Form.useForm();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isAgree, setIsAgree] = useState(true);
 
   const handleSignUp = async (values: SignUp) => {
-    console.log(values);
+    const api = "/Customers/sign-up";
+    setIsLoading(true);
+
+    try {
+      const res: any = await handleAPI({
+        url: api,
+        data: values,
+        method: "post",
+      });
+      if (res.value) {
+        const auth = res.value;
+        dispatch(addAuth(auth));
+        localStorage.setItem("authData", JSON.stringify(res.value));
+      }
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -53,6 +78,7 @@ const Signup = () => {
                 </Typography.Paragraph>
               </div>
               <Form
+                disabled={isLoading}
                 form={form}
                 layout="vertical"
                 onFinish={handleSignUp}
@@ -93,6 +119,7 @@ const Signup = () => {
               </div>
               <div className="mt-4">
                 <Button
+                  loading={isLoading}
                   type="primary"
                   style={{ width: "100%" }}
                   size="large"

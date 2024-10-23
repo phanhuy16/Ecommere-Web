@@ -8,17 +8,17 @@ import { ConfigProvider } from "antd";
 function App() {
   return (
     <BrowserRouter>
-      <Provider store={store}>
-        <ConfigProvider
-          theme={{
-            token: {
-              colorPrimary: "#131118",
-            },
-          }}
-        >
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: "#131118",
+          },
+        }}
+      >
+        <Provider store={store}>
           <Routers />
-        </ConfigProvider>
-      </Provider>
+        </Provider>
+      </ConfigProvider>
     </BrowserRouter>
   );
 }

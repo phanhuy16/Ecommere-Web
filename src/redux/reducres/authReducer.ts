@@ -1,23 +1,21 @@
-
 import { createSlice } from "@reduxjs/toolkit";
-
-
 
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
     data: {
-      accesstoken: '',
+      token: '',
       id: ''
     }
   }, reducers: {
-    addAuth: (state, action) => {
+    addAuth: (state: any, action) => {
       state.data = action.payload;
     },
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     removeAuth: (state, _action) => {
       state.data = {
-        accesstoken: '',
+        token: '',
         id: ''
       }
     }
