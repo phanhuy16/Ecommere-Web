@@ -1,7 +1,7 @@
 import { Layout } from "antd";
 import { Route, Routes } from "react-router-dom";
-import HomePage from "../pages/home/HomePage";
 import HeaderComponent from "../components/HeaderComponent";
+import { BlogPage, ContactPage, HomePage, ShopPage, StoryPage } from "../pages";
 const { Content, Footer } = Layout;
 const MainRouter = () => {
   return (
@@ -10,6 +10,10 @@ const MainRouter = () => {
       <Content>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/shop" element={<ShopPage />} />
+          <Route path="/sotry" element={<StoryPage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/contact" element={<ContactPage />} />
         </Routes>
       </Content>
       <Footer />

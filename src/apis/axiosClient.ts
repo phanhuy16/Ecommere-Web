@@ -24,7 +24,7 @@ axiosClient.interceptors.request.use(async (config: any) => {
     ...config.headers,
   };
 
-  return { ...config, data: config.data ?? null };
+  return { ...config, data: config.data ?? undefined };
 })
 
 axiosClient.interceptors.response.use(res => {

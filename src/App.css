@@ -2,3 +2,6 @@
 .title-danger {
   color: coral;
 }
+.ant-menu-item-selected::after {
+  border-bottom-width: 0px;
+}

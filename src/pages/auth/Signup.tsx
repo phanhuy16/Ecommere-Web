@@ -35,7 +35,6 @@ const Signup = () => {
         const auth = res.value;
         dispatch(addAuth(auth));
         localStorage.setItem("authData", JSON.stringify(auth));
-        console.log(dispatch(addAuth(auth)));
       }
       navigate("/");
     } catch (error) {
