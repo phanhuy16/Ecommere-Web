@@ -13,13 +13,13 @@ const TabbarComponent = (props: Props) => {
   const { title, right, level } = props;
   return (
     <>
-      <div className="row">
+      <div className="row m-0">
         <div className={`col ${!right && "text-center"}`}>
           <Title className="fw-normal" level={level ?? 2}>
             {title}
           </Title>
         </div>
-        {right && right}
+        <div className="col text-end">{right && right}</div>
       </div>
     </>
   );

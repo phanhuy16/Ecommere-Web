@@ -7,6 +7,7 @@ export interface CategoryModel {
   createdAt: string
   updatedAt: any
   parent: any
+  image?: string
   subCategories: any[]
   productCategories: any[]
   suppliers: any[]
