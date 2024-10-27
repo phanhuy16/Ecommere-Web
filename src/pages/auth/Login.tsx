@@ -29,9 +29,9 @@ const Login = () => {
         const auth = res.value;
         dispatch(addAuth(auth));
         localStorage.setItem("authData", JSON.stringify(auth));
+        navigate("/");
       }
 
-      navigate("/");
     } catch (error) {
       console.log(error);
       message.error(

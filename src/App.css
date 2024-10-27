@@ -5,3 +5,7 @@
 .ant-menu-item-selected::after {
   border-bottom-width: 0px;
 }
+.section {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}

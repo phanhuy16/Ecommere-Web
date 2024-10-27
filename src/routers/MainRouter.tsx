@@ -1,7 +1,7 @@
 import { Layout } from "antd";
 import { Route, Routes } from "react-router-dom";
-import HeaderComponent from "../components/HeaderComponent";
 import { BlogPage, ContactPage, HomePage, ShopPage, StoryPage } from "../pages";
+import { HeaderComponent } from "../components";
 const { Content, Footer } = Layout;
 const MainRouter = () => {
   return (
