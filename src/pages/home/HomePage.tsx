@@ -2,9 +2,9 @@ import { Button, Carousel, Space, Spin, Typography } from "antd";
 import { ArrowLeft, ArrowRight } from "iconsax-react";
 import { useEffect, useRef, useState } from "react";
 import handleAPI from "../../apis/handleAPI";
-import { TabbarComponent } from "../../components";
+import { ProductItem, TabbarComponent } from "../../components";
 import Section from "../../components/Section";
-import { CategoryModel } from "../../models/Products";
+import { CategoryModel, ProductModel } from "../../models/Products";
 import { PromotionModel } from "../../models/PromotionModel";
 import { CarouselRef } from "antd/es/carousel";
 import { useNavigate } from "react-router-dom";
@@ -22,6 +22,7 @@ const HomePage = () => {
       values: CategoryModel[];
     }[]
   >([]);
+  const [bestSellers, setBestSellers] = useState<ProductModel[]>([]);
 
   const catSlideRef = useRef<CarouselRef>(null);
   const cats = categories.filter((element) => !element.parentId);
@@ -47,14 +48,16 @@ const HomePage = () => {
     const numOfDatas = Math.ceil(cats.length / numOfColumn);
 
     for (let index = 0; index < numOfDatas; index++) {
-      const values = cats.splice(0, numOfColumn);
+      const values = cats.slice(0, numOfColumn);
       items.push({
         key: `array${index}`,
         values,
       });
     }
+
     setCatsArray(items);
-  }, [numOfColumn, cats]);
+    console.log(cats);
+  }, [numOfColumn]);
 
   const getData = async () => {
     setIsLoading(true);
@@ -62,6 +65,7 @@ const HomePage = () => {
     try {
       await getPromotions();
       await getCategories();
+      await getBestSeller();
     } catch (error) {
       console.log(error);
     } finally {
@@ -81,61 +85,68 @@ const HomePage = () => {
     setCategories(res);
   };
 
-  return (
+  const getBestSeller = async () => {
+    try {
+      const res: any = await handleAPI({ url: `/Products/get-best-seller` });
+      setBestSellers(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return isLoading ? (
+    <Spin fullscreen />
+  ) : (
     <>
       <div className="container-fuild d-none d-md-block">
         <div className="container">
-          {isLoading ? (
-            <Spin />
-          ) : (
-            promotions.length > 0 && (
-              <Carousel
-                speed={3000}
-                autoplay
-                style={{ width: "100%", height: 665 }}
-              >
-                {promotions.map((item) => (
-                  <div key={item.id}>
-                    <img
-                      src={item.imageURL}
-                      style={{
-                        width: "100%",
-                        height: "auto",
-                        objectFit: "cover",
-                        maxHeight: 665,
-                        borderRadius: 10,
-                      }}
-                      alt=""
-                    />
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: "35%",
-                        left: 60,
-                      }}
-                    >
-                      <Title className="m-0" level={1}>
-                        {item.title}
-                      </Title>
-                      <Title level={3} className="fw-normal">
-                        UP TO {item.value} {item.type === "percent" ? "%" : ""}
-                      </Title>
+          {promotions.length > 0 && (
+            <Carousel
+              speed={3000}
+              autoplay
+              style={{ width: "100%", height: 665 }}
+            >
+              {promotions.map((item) => (
+                <div key={item.id}>
+                  <img
+                    src={item.imageURL}
+                    style={{
+                      width: "100%",
+                      height: "auto",
+                      objectFit: "cover",
+                      maxHeight: 665,
+                      borderRadius: 10,
+                    }}
+                    alt=""
+                  />
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "35%",
+                      left: 60,
+                    }}
+                  >
+                    <Title className="m-0" level={1}>
+                      {item.title}
+                    </Title>
+                    <Title level={3} className="fw-normal">
+                      UP TO {item.value} {item.type === "percent" ? "%" : ""}
+                    </Title>
 
-                      <div className="mt-4">
-                        <Button
-                          iconPosition="end"
-                          type="primary"
-                          size="large"
-                          icon={<ArrowRight size={20} />}
-                        >
-                          Shop now
-                        </Button>
-                      </div>
+                    <div className="mt-4">
+                      <Button
+                        iconPosition="end"
+                        type="primary"
+                        size="large"
+                        icon={<ArrowRight size={20} />}
+                      >
+                        Shop now
+                      </Button>
                     </div>
                   </div>
-                ))}
-              </Carousel>
-            )
+                </div>
+              ))}
+            </Carousel>
           )}
         </div>
       </div>
@@ -204,6 +215,14 @@ const HomePage = () => {
               </div>
             ))}
           </Carousel>
+        </Section>
+        <Section>
+          <TabbarComponent title="Our Bestseller" />
+          <div className="row">
+            {bestSellers.map((item) => (
+              <ProductItem item={item} key={item.id} />
+            ))}
+          </div>
         </Section>
       </div>
     </>

@@ -31,7 +31,7 @@ const Routers = () => {
   };
 
   return isLoading ? (
-    <Spin />
+    <Spin fullscreen />
   ) : location && location.pathname.includes("Account") ? (
     <AuthRouter />
   ) : (

@@ -19,6 +19,7 @@ export interface ProductModel {
   slug: string
   supplier: string
   description: string
+  images: string[]
   expiryDate: any
   createdAt: string
   updatedAt: any

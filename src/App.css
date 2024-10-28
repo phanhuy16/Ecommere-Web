@@ -13,3 +13,51 @@ body {
   display: block;
   margin: 0 auto;
 }
+.title {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+}
+
+.product-item:hover {
+  box-shadow: 10px 9px 49px 1px rgba(0, 0, 0, 0.44);
+  -webkit-box-shadow: 10px 9px 49px 1px rgba(0, 0, 0, 0.44);
+  -moz-box-shadow: 10px 9px 49px 1px rgba(0, 0, 0, 0.44);
+  transition: all 1s;
+}
+
+.product-item {
+  border-radius: 10px;
+}
+
+.product-item .btn-container {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  padding: 12px;
+  text-align: center;
+
+}
+
+.product-item .btn-container {
+  display: none;
+}
+
+.product-item:hover .btn-container {
+  display: block;
+  transition: all 5s;
+}
+
+.btn-icon {
+  border: none;
+  border-radius: 100px;
+}
+
+.product-item .btn-container .btn-list {
+  height: 100%;
+}
