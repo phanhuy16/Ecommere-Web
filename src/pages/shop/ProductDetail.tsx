@@ -73,21 +73,6 @@ const ProductDetail = () => {
     }
   };
 
-  // const handleCart = async () => {
-  //   if (auth.id && auth.token) {
-  //     if (subProductSelected) {
-  //       const item = { ...subProductSelected, createdBy: auth.id, count };
-  //       dispatch(addCart(item));
-  //     } else {
-  //       message.error("Please choice a product!");
-  //     }
-  //   } else {
-  //     navigate(
-  //       `/Account/login?id=${productDetail?.id}&slug=${productDetail?.slug}`
-  //     );
-  //   }
-  // };
-
   const handleCart = async () => {
     if (auth.id && auth.token) {
       if (subProductSelected) {
@@ -98,6 +83,7 @@ const ProductDetail = () => {
           size: item.size,
           color: item.color,
           price: item.price,
+          title: productDetail?.title,
           qty: item.qty,
           productId: item.product_Id,
           subProductId: item.id,
@@ -120,7 +106,7 @@ const ProductDetail = () => {
     return (
       subProductSelected && (
         <>
-          <div className="btn-gruop">
+          <div className="btn-group">
             <Button
               type="text"
               onClick={() => setCount(count - 1)}

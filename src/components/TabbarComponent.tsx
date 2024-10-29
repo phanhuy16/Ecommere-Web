@@ -15,7 +15,11 @@ const TabbarComponent = (props: Props) => {
     <>
       <div className="row m-0">
         <div className={`col ${!right && "text-center"}`}>
-          <Title className="fw-bold my-4" level={level ?? 2}>
+          <Title
+            style={{ fontWeight: 300 }}
+            className="my-4"
+            level={level ?? 2}
+          >
             {title}
           </Title>
         </div>

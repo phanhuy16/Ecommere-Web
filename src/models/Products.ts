@@ -33,7 +33,7 @@ export interface SubProductModel {
   size: string
   qty: number
   price: number
-  productId: string
+  product_Id: string
   images: string[]
   discount?: number
   count: number

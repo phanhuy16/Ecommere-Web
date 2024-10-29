@@ -56,8 +56,7 @@ const HomePage = () => {
     }
 
     setCatsArray(items);
-    console.log(cats);
-  }, [numOfColumn]);
+  }, [numOfColumn, categories]);
 
   const getData = async () => {
     setIsLoading(true);

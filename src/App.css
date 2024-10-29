@@ -29,6 +29,11 @@ body {
   transition: all 1s;
 }
 
+.shadow {
+  box-shadow: 10px 9px 49px 1px rgba(0, 0, 0, 0.44);
+  -webkit-box-shadow: 10px 9px 49px 1px rgba(0, 0, 0, 0.44);
+  -moz-box-shadow: 10px 9px 49px 1px rgba(0, 0, 0, 0.44);
+}
 .product-item {
   border-radius: 10px;
 }
@@ -72,10 +77,10 @@ body {
   height: 32px;
   border-radius: 4px;
 }
-.btn-gruop {
+.btn-group {
   display: flex;
   align-items: center;
-  gap: 10px;
+  /* gap: 10px; */
   border-radius: 8px;
   border: 1px solid #ccc;
 }
