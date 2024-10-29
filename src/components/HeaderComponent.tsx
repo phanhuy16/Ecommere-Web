@@ -1,16 +1,50 @@
-import { Affix, Button, Drawer, Menu, Space } from "antd";
+import { Affix, Badge, Button, Drawer, Menu, Space } from "antd";
 import { HambergerMenu, Heart } from "iconsax-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { BiPowerOff, BiSearch } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { authSeletor, removeAuth } from "../redux/reducres/authReducer";
+import { SubProductModel } from "../models/Products";
+import { cartSeletor } from "../redux/reducres/cartReducer";
+import handleAPI from "../apis/handleAPI";
 
 const HeaderComponent = () => {
   const [isVisibleDrawer, setIsVisibleDrawer] = useState(false);
   const auth = useSelector(authSeletor);
   const dispatch = useDispatch();
+  const cart: SubProductModel[] = useSelector(cartSeletor);
+
+  useEffect(() => {
+    handleUpdateCartToDatabase(cart);
+  }, [cart]);
+
+  console.log(cart);
+
+  const handleUpdateCartToDatabase = async (data: any[]) => {
+    console.log(data);
+    data.forEach(async (item) => {
+      const api = `/Carts/add-new`;
+      const value = {
+        createdBy: item.createdBy,
+        count: item.count,
+        size: item.size,
+        color: item.color,
+        price: item.price,
+        qty: item.qty,
+        productId: item.productId,
+        subProductId: item.subProductId,
+      };
+
+      try {
+        const res = await handleAPI({ url: api, data: value, method: "post" });
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
+    });
+  };
 
   return (
     <Affix offsetTop={0}>
@@ -54,7 +88,13 @@ const HeaderComponent = () => {
             <Space>
               <Button icon={<BiSearch size={24} type="text" />} />
               <Button icon={<Heart size={24} type="text" />} />
-              <Button icon={<AiOutlineShoppingCart size={24} type="text" />} />
+              <Button
+                icon={
+                  <Badge count={cart.length}>
+                    <AiOutlineShoppingCart size={24} type="text" />
+                  </Badge>
+                }
+              />
               {auth.token && auth.id ? (
                 <Button
                   onClick={() => {

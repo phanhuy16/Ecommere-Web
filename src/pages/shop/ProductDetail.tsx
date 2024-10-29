@@ -1,9 +1,23 @@
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { ProductModel, SubProductModel } from "../../models/Products";
 import { useEffect, useState } from "react";
 import handleAPI from "../../apis/handleAPI";
-import { Breadcrumb, Button, Rate, Space, Spin, Tag, Typography } from "antd";
+import {
+  Breadcrumb,
+  Button,
+  message,
+  Rate,
+  Space,
+  Spin,
+  Tag,
+  Typography,
+} from "antd";
 import { VND } from "../../utils/handleCurrency";
+import { PiCableCar } from "react-icons/pi";
+import { Add, Heart, Minus } from "iconsax-react";
+import { useDispatch, useSelector } from "react-redux";
+import { authSeletor } from "../../redux/reducres/authReducer";
+import { addCart, cartSeletor } from "../../redux/reducres/cartReducer";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -12,17 +26,36 @@ const ProductDetail = () => {
   const [subProductSelected, setSubProductSelected] =
     useState<SubProductModel>();
   const [isLoading, setIsLoading] = useState(false);
+  const [count, setCount] = useState(1);
+  const [inStockValue, setInStockValue] = useState(subProductSelected?.qty);
 
   const [params] = useSearchParams();
-
   const id = params.get("id");
   const sub = productDetail?.subProducts;
+  const auth = useSelector(authSeletor);
+  const navigate = useNavigate();
+  const cart: SubProductModel[] = useSelector(cartSeletor);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (id) {
       getProductDetail();
     }
   }, [id]);
+
+  useEffect(() => {
+    setCount(1);
+  }, [subProductSelected]);
+
+  useEffect(() => {
+    const item = cart.find((element) => element.id === subProductSelected?.id);
+    if (item && subProductSelected) {
+      const qty = subProductSelected?.qty - item.count;
+      setInStockValue(qty);
+    } else {
+      setInStockValue(subProductSelected?.qty);
+    }
+  }, [cart, subProductSelected]);
 
   const getProductDetail = async () => {
     setIsLoading(true);
@@ -40,8 +73,87 @@ const ProductDetail = () => {
     }
   };
 
+  // const handleCart = async () => {
+  //   if (auth.id && auth.token) {
+  //     if (subProductSelected) {
+  //       const item = { ...subProductSelected, createdBy: auth.id, count };
+  //       dispatch(addCart(item));
+  //     } else {
+  //       message.error("Please choice a product!");
+  //     }
+  //   } else {
+  //     navigate(
+  //       `/Account/login?id=${productDetail?.id}&slug=${productDetail?.slug}`
+  //     );
+  //   }
+  // };
+
+  const handleCart = async () => {
+    if (auth.id && auth.token) {
+      if (subProductSelected) {
+        const item = subProductSelected;
+        const value = {
+          createdBy: auth.id,
+          count,
+          size: item.size,
+          color: item.color,
+          price: item.price,
+          qty: item.qty,
+          productId: item.product_Id,
+          subProductId: item.id,
+        };
+        dispatch(addCart(value));
+      } else {
+        message.error("Please choice a product!");
+      }
+    } else {
+      navigate(
+        `/Account/login?id=${productDetail?.id}&slug=${productDetail?.slug}`
+      );
+    }
+  };
+
+  const renderBtnGroup = () => {
+    const item = cart.find((element) => element.id === subProductSelected?.id);
+
+    return (
+      subProductSelected && (
+        <>
+          <div className="btn-gruop">
+            <Button
+              type="text"
+              onClick={() => setCount(count - 1)}
+              disabled={count === 1}
+              icon={<Minus size={20} />}
+            />
+            <Text>{count}</Text>
+            <Button
+              type="text"
+              disabled={
+                count ===
+                (item
+                  ? (subProductSelected.qty = item.count)
+                  : subProductSelected.qty)
+              }
+              onClick={() => setCount(count + 1)}
+              icon={<Add size={20} />}
+            />
+          </div>
+          <Button
+            disabled={item?.count === subProductSelected.qty}
+            onClick={handleCart}
+            type="primary"
+            style={{ minWidth: 200 }}
+          >
+            Add to Cart
+          </Button>
+        </>
+      )
+    );
+  };
+
   return isLoading ? (
-    <Spin />
+    <Spin fullscreen />
   ) : (
     <div className="container-fluid mt-3 mb-5">
       <div className="container">
@@ -76,10 +188,10 @@ const ProductDetail = () => {
                   alt={productDetail?.title}
                 />
               ) : (
-                ""
+                <PiCableCar size={48} className="text-muted" />
               )}
             </div>
-            <Space wrap className="mt-2">
+            <Space wrap className="mt-4">
               {sub
                 ? sub?.length > 0 &&
                   sub?.map((item) => (
@@ -111,14 +223,15 @@ const ProductDetail = () => {
                   <Tag
                     color={subProductSelected?.qty > 0 ? "success" : "error"}
                   >
-                    {subProductSelected?.qty > 0 ? "in Stock" : "out Stock"}
+                    {subProductSelected?.qty > 0
+                      ? `in Stock (${inStockValue})`
+                      : "out Stock"}
                   </Tag>
                 ) : (
                   ""
                 )}
               </div>
             </div>
-
             <Space>
               <Rate count={5} />
               <Text type="secondary">(5.0)</Text>
@@ -169,7 +282,6 @@ const ProductDetail = () => {
                     : ""}
                 </Space>
               </div>
-
               <div className="mt-3">
                 <Paragraph
                   style={{ fontWeight: 600, fontSize: 18, marginBottom: 8 }}
@@ -192,6 +304,13 @@ const ProductDetail = () => {
                         </Button>
                       ))
                     : ""}
+                </Space>
+              </div>
+              <div className="mt-5">
+                <Space>
+                  {renderBtnGroup()}
+
+                  <Button icon={<Heart size={20} />} />
                 </Space>
               </div>
             </div>

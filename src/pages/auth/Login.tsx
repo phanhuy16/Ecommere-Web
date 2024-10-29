@@ -1,7 +1,7 @@
 import { Button, Form, Input, message, Typography } from "antd";
 import BG_Login from "/assets/images/login.png";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import handleAPI from "../../apis/handleAPI";
 import { addAuth } from "../../redux/reducres/authReducer";
 import { useDispatch } from "react-redux";
@@ -13,6 +13,9 @@ const Login = () => {
   const navigate = useNavigate();
 
   const [form] = Form.useForm();
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("id");
+  const slug = searchParams.get("slug");
 
   const handleLogin = async (values: { email: string; password: string }) => {
     const api = "/Customers/login";
@@ -29,9 +32,9 @@ const Login = () => {
         const auth = res.value;
         dispatch(addAuth(auth));
         localStorage.setItem("authData", JSON.stringify(auth));
-        navigate("/");
-      }
 
+        navigate(id && slug ? `/product/detail/${slug}?id=${id}` : "/");
+      }
     } catch (error) {
       console.log(error);
       message.error(
