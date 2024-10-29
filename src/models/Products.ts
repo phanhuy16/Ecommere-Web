@@ -35,4 +35,5 @@ export interface SubProductModel {
   price: number
   productid: string
   images: string[]
+  discount?: number
 }

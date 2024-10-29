@@ -73,6 +73,7 @@ const HomePage = () => {
     }
   };
 
+
   const getPromotions = async () => {
     const api = `/Promotion/get-all`;
     const res = await handleAPI({ url: api });

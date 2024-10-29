@@ -1,4 +1,4 @@
-import { Button, Drawer, Menu, Space } from "antd";
+import { Affix, Button, Drawer, Menu, Space } from "antd";
 import { HambergerMenu, Heart } from "iconsax-react";
 import { useState } from "react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
@@ -13,8 +13,8 @@ const HeaderComponent = () => {
   const dispatch = useDispatch();
 
   return (
-    <>
-      <div className="p-3 container">
+    <Affix offsetTop={0}>
+      <div className="p-3 container bg-white">
         <div className="row">
           <div className="d-none d-sm-block d-md-none">
             <Button
@@ -79,7 +79,7 @@ const HeaderComponent = () => {
         onClick={() => setIsVisibleDrawer(false)}
         placement="left"
       ></Drawer>
-    </>
+    </Affix>
   );
 };
 

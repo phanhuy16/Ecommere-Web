@@ -4,12 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import { MdImage } from "react-icons/md";
 import { colors } from "../constants/color";
 import { ProductModel } from "../models/Products";
+import { VND } from "../utils/handleCurrency";
+import { Link } from "react-router-dom";
 
 interface Props {
   item: ProductModel;
 }
 
-const { Title, Text, Paragraph } = Typography;
+const { Text, Paragraph } = Typography;
 
 const ProductItem = (props: Props) => {
   const { item } = props;
@@ -17,16 +19,23 @@ const ProductItem = (props: Props) => {
   const [elementWidth, setElementWidth] = useState();
 
   const ref = useRef<any>();
+  // Calculate price range
+  const prices = item.subProducts?.map((sub) => sub.price) || [];
+  const minPrice = Math.min(...prices);
+  const maxPrice = Math.max(...prices);
 
   useEffect(() => {
     const width = ref.current?.offsetWidth;
     setElementWidth(width);
   }, []);
 
-  console.log(item);
-
   return (
-    <div key={item.id} className="col-sm-6 col-md-4 col-lg-3 mb-4 product-item">
+    <Link
+      to={`/product/detail/${item.slug}?id=${item.id}`}
+      ref={ref}
+      key={item.id}
+      className="col-sm-6 col-md-4 col-lg-3 mb-4 product-item"
+    >
       <div style={{ position: "relative" }}>
         {item.images.length > 0 ? (
           <img
@@ -85,9 +94,16 @@ const ProductItem = (props: Props) => {
         <Tooltip title={item.title}>
           <Text className="m-0 title fs-5">{item.title}</Text>
         </Tooltip>
-        <Text className="mt-3 d-block fw-bold fs-6">{`0.00 - 100.20`}</Text>
+        <Text className="mt-3 d-block fw-bold fs-6">
+          {/* {minPrice === maxPrice
+            ? `$${minPrice.toFixed(2)}`
+            : `$${minPrice.toFixed(2)} - $${maxPrice.toFixed(2)}`} */}
+          {minPrice === maxPrice
+            ? `${VND.format(minPrice)}`
+            : `${VND.format(minPrice)} - ${VND.format(maxPrice)}`}
+        </Text>
       </div>
-    </div>
+    </Link>
   );
 };
 
