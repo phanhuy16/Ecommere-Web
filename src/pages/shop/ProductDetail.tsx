@@ -101,6 +101,7 @@ const ProductDetail = () => {
           qty: item.qty,
           productId: item.product_Id,
           subProductId: item.id,
+          image: item.images[0],
         };
         dispatch(addCart(value));
       } else {

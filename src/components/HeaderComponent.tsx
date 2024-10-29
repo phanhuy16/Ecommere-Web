@@ -16,11 +16,22 @@ const HeaderComponent = () => {
   const dispatch = useDispatch();
   const cart: SubProductModel[] = useSelector(cartSeletor);
 
-  useEffect(() => {
-    handleUpdateCartToDatabase(cart);
-  }, [cart]);
+  // useEffect(() => {
+  //   if (cart.length > 0) {
+  //     handleUpdateCartToDatabase(cart);
+  //   }
+  // }, [cart]);
 
-  console.log(cart);
+  useEffect(() => {
+    const prevCart = JSON.parse(localStorage.getItem("prevCart") || "[]");
+
+    // So sánh giỏ hàng hiện tại và giỏ hàng đã lưu trước đó
+    if (JSON.stringify(cart) !== JSON.stringify(prevCart) && cart.length > 0) {
+      handleUpdateCartToDatabase(cart);
+      // Cập nhật giỏ hàng vào localStorage sau khi cập nhật lên database
+      localStorage.setItem("prevCart", JSON.stringify(cart));
+    }
+  }, [cart]);
 
   const handleUpdateCartToDatabase = async (data: any[]) => {
     console.log(data);
@@ -35,6 +46,7 @@ const HeaderComponent = () => {
         qty: item.qty,
         productId: item.productId,
         subProductId: item.subProductId,
+        image: item.image,
       };
 
       try {

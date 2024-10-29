@@ -5,7 +5,7 @@ import { MdImage } from "react-icons/md";
 import { colors } from "../constants/color";
 import { ProductModel } from "../models/Products";
 import { VND } from "../utils/handleCurrency";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface Props {
   item: ProductModel;
@@ -19,6 +19,8 @@ const ProductItem = (props: Props) => {
   const [elementWidth, setElementWidth] = useState();
 
   const ref = useRef<any>();
+  const navigate = useNavigate();
+
   // Calculate price range
   const prices = item.subProducts?.map((sub) => sub.price) || [];
   const minPrice = Math.min(...prices);
@@ -84,7 +86,13 @@ const ProductItem = (props: Props) => {
               />
             </Space>
           </div>
-          <Button size="large" style={{ width: "80%" }}>
+          <Button
+            onClick={() =>
+              navigate(`/product/detail/${item.slug}?id=${item.id}`)
+            }
+            size="large"
+            style={{ width: "80%" }}
+          >
             Add to Cart
           </Button>
         </div>
