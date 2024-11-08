@@ -1,4 +1,4 @@
-import { Button, Checkbox, Form, Input, Typography } from "antd";
+import { Button, Checkbox, Form, Input, message, Typography } from "antd";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -37,8 +37,8 @@ const Signup = () => {
         localStorage.setItem("authData", JSON.stringify(auth));
       }
       navigate("/");
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      message.error(error.message);
     } finally {
       setIsLoading(false);
     }

@@ -1,4 +1,4 @@
-import { Button, Modal } from "antd";
+import { Button, message, Modal } from "antd";
 import { CartModel } from "../models/CartModel";
 import { Trash } from "iconsax-react";
 import { useDispatch } from "react-redux";
@@ -20,8 +20,8 @@ const ButtonRemoveCartItem = (props: Props) => {
       await handleAPI({ url: api, data: undefined, method: "delete" });
 
       dispatch(removeCart(item));
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      message.error(error.message);
     }
   };
 

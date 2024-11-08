@@ -70,8 +70,8 @@ const ProductDetail = () => {
       if (res?.subProducts?.length > 0) {
         setSubProductSelected(res.subProducts[0]);
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      message.error(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -115,8 +115,8 @@ const ProductDetail = () => {
             });
             dispatch(addCart(res.data));
           }
-        } catch (error) {
-          console.log(error);
+        } catch (error: any) {
+          message.error(error.message);
         }
 
         // const api = `/Carts/add-new`;
@@ -128,8 +128,8 @@ const ProductDetail = () => {
         //     method: index === -1 ? "post" : "put",
         //   });
         //   dispatch(addCart(res.data));
-        // } catch (error) {
-        //   console.log(error);
+        // } catch (error:any) {
+        //    message.error(error.message);
         // }
       } else {
         message.error("Please choice a product!");

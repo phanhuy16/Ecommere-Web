@@ -1,4 +1,4 @@
-import { Spin } from "antd";
+import { message, Spin } from "antd";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import AuthRouter from "./AuthRouter";
@@ -30,8 +30,8 @@ const Routers = () => {
       if (res) {
         dispatch(addAuth(JSON.parse(res)));
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      message.error(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -43,8 +43,8 @@ const Routers = () => {
       if (auth.id) {
         await getCartInDatabase();
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      message.error(error.message);
     } finally {
       setIsLoading(false);
     }

@@ -13,13 +13,11 @@ import {
   Typography,
 } from "antd";
 import { HambergerMenu, Heart } from "iconsax-react";
-import { useEffect, useState } from "react";
-import { AiOutlineShoppingCart, AiOutlineTransaction } from "react-icons/ai";
+import { useState } from "react";
+import { AiOutlineShoppingCart } from "react-icons/ai";
 import { BiSearch } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import handleAPI from "../apis/handleAPI";
-import { TransantionSubProductModal } from "../modals";
 import { CartModel } from "../models/CartModel";
 import { authSeletor, removeAuth } from "../redux/reducres/authReducer";
 import { cartSeletor } from "../redux/reducres/cartReducer";
@@ -30,44 +28,11 @@ const { Paragraph, Title, Text } = Typography;
 
 const HeaderComponent = () => {
   const [isVisibleDrawer, setIsVisibleDrawer] = useState(false);
-  const [visbleModelTransationProduct, setVisbleModelTransationProduct] =
-    useState(false);
-  const [productSelected, setProductSelected] = useState("");
 
   const auth = useSelector(authSeletor);
   const dispatch = useDispatch();
   const cart: CartModel[] = useSelector(cartSeletor);
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   if (cart.length > 0) {
-  //     handleUpdateCartToDatabase(cart);
-  //   }
-  // }, [cart]);
-
-  // const handleUpdateCartToDatabase = async (data: CartModel[]) => {
-  //   data.forEach(async (item) => {
-  //     const api = `/Carts/add-new`;
-  //     const value = {
-  //       createdBy: item.createdBy,
-  //       count: item.count,
-  //       size: item.size,
-  //       color: item.color,
-  //       price: item.price,
-  //       title: item.title,
-  //       qty: item.qty,
-  //       productId: item.productId,
-  //       subProductId: item.subProductId,
-  //       image: item.image,
-  //     };
-
-  //     try {
-  //       await handleAPI({ url: api, data: value, method: "post" });
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   });
-  // };
 
   return (
     <Affix offsetTop={0}>
@@ -130,18 +95,6 @@ const HeaderComponent = () => {
                           key={item.id}
                           extra={
                             <div>
-                              <Button
-                                onClick={() => {
-                                  setProductSelected(item.productId);
-                                  setVisbleModelTransationProduct(true);
-                                }}
-                                icon={
-                                  <AiOutlineTransaction
-                                    size={20}
-                                    className="text-muted"
-                                  />
-                                }
-                              />
                               <ButtonRemoveCartItem item={item} />
                             </div>
                           }
@@ -227,12 +180,6 @@ const HeaderComponent = () => {
       >
         Hello
       </Drawer>
-
-      <TransantionSubProductModal
-        visible={visbleModelTransationProduct}
-        onClose={() => setVisbleModelTransationProduct(false)}
-        productId={productSelected}
-      />
     </Affix>
   );
 };

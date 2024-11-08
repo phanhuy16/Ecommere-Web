@@ -35,8 +35,8 @@ const Login = () => {
 
         navigate(id && slug ? `/product/detail/${slug}?id=${id}` : "/");
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error:any) {
+      message.error(error.message);
       message.error(
         "Đăng nhập thất bại, vui lòng kiểm tra lại email/password và thử lại!"
       );

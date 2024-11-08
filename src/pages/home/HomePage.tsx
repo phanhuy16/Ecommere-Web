@@ -1,4 +1,4 @@
-import { Button, Carousel, Space, Spin, Typography } from "antd";
+import { Button, Carousel, message, Space, Spin, Typography } from "antd";
 import { ArrowLeft, ArrowRight } from "iconsax-react";
 import { useEffect, useRef, useState } from "react";
 import handleAPI from "../../apis/handleAPI";
@@ -65,13 +65,12 @@ const HomePage = () => {
       await getPromotions();
       await getCategories();
       await getBestSeller();
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      message.error(error.message);
     } finally {
       setIsLoading(false);
     }
   };
-
 
   const getPromotions = async () => {
     const api = `/Promotion/get-all`;
@@ -89,8 +88,8 @@ const HomePage = () => {
     try {
       const res: any = await handleAPI({ url: `/Products/get-best-seller` });
       setBestSellers(res);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      message.error(error.message);
     }
   };
 
