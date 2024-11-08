@@ -17,7 +17,11 @@ import { PiCableCar } from "react-icons/pi";
 import { Add, Heart, Minus } from "iconsax-react";
 import { useDispatch, useSelector } from "react-redux";
 import { authSeletor } from "../../redux/reducres/authReducer";
-import { addCart, cartSeletor } from "../../redux/reducres/cartReducer";
+import {
+  addCart,
+  cartSeletor,
+  changeCount,
+} from "../../redux/reducres/cartReducer";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -89,7 +93,44 @@ const ProductDetail = () => {
           subProductId: item.id,
           image: item.images[0],
         };
-        dispatch(addCart(value));
+
+        const index = cart.findIndex(
+          (element: any) => element.subProductId === value.subProductId
+        );
+
+        try {
+          if (index !== -1) {
+            const res = await handleAPI({
+              url: `/Carts/update-cart?id=${cart[index].id}`,
+              data: cart[index].count + count,
+              method: "put",
+            });
+            console.log(res);
+            dispatch(changeCount({ id: cart[index].id, val: count }));
+          } else {
+            const res = await handleAPI({
+              url: `/Carts/add-new`,
+              data: value,
+              method: "post",
+            });
+            dispatch(addCart(res.data));
+          }
+        } catch (error) {
+          console.log(error);
+        }
+
+        // const api = `/Carts/add-new`;
+
+        // try {
+        //   const res = await handleAPI({
+        //     url: api,
+        //     data: value,
+        //     method: index === -1 ? "post" : "put",
+        //   });
+        //   dispatch(addCart(res.data));
+        // } catch (error) {
+        //   console.log(error);
+        // }
       } else {
         message.error("Please choice a product!");
       }

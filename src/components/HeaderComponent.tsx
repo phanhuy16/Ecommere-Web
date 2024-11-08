@@ -39,35 +39,35 @@ const HeaderComponent = () => {
   const cart: CartModel[] = useSelector(cartSeletor);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (cart.length > 0) {
-      handleUpdateCartToDatabase(cart);
-    }
-  }, [cart]);
+  // useEffect(() => {
+  //   if (cart.length > 0) {
+  //     handleUpdateCartToDatabase(cart);
+  //   }
+  // }, [cart]);
 
-  const handleUpdateCartToDatabase = async (data: CartModel[]) => {
-    data.forEach(async (item) => {
-      const api = `/Carts/add-new`;
-      const value = {
-        createdBy: item.createdBy,
-        count: item.count,
-        size: item.size,
-        color: item.color,
-        price: item.price,
-        title: item.title,
-        qty: item.qty,
-        productId: item.productId,
-        subProductId: item.subProductId,
-        image: item.image,
-      };
+  // const handleUpdateCartToDatabase = async (data: CartModel[]) => {
+  //   data.forEach(async (item) => {
+  //     const api = `/Carts/add-new`;
+  //     const value = {
+  //       createdBy: item.createdBy,
+  //       count: item.count,
+  //       size: item.size,
+  //       color: item.color,
+  //       price: item.price,
+  //       title: item.title,
+  //       qty: item.qty,
+  //       productId: item.productId,
+  //       subProductId: item.subProductId,
+  //       image: item.image,
+  //     };
 
-      try {
-        await handleAPI({ url: api, data: value, method: "post" });
-      } catch (error) {
-        console.log(error);
-      }
-    });
-  };
+  //     try {
+  //       await handleAPI({ url: api, data: value, method: "post" });
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   });
+  // };
 
   return (
     <Affix offsetTop={0}>

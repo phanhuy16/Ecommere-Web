@@ -10,7 +10,7 @@ export interface SupplierModel {
   isTalking: boolean
   email: string
   active: number
-  photoUrl: string
+  image: string
   created_at: string
   updated_at: string
   index: number
